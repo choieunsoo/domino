@@ -10,12 +10,27 @@
 	<script src="../js/jquery-3.3.1.min.js"></script>
 	<script>
 		$(function(){
+			var current = 0;
+			var clickInterval;
 			var menu = $(".gnb_menu>li>a");
+			var liCount = $(".slider>ul>li").length;
+			var wrapWidth = $(window).outerWidth();
 
-			$(".left>a>i").click(function(){
-				$(".tab").slideToggle();
+			// --------icon(click)---
+			$(".fa-bars").click(function(){
+				$(".tab").show();
+				$(".menu_area").css("display","none");
+				$(".fa-bars").hide();
+				$(".fa-times").css("display","block");
+			});
+			$(".fa-times").click(function(){
+				$(".tab").hide();
+				$(".menu_area").css("display","block");
+				$(".fa-bars").show();
+				$(".fa-times").css("display","none");
 			});
 
+			// --------menu---
 			$(".gnb_menu>li").mouseover(function(){
 				menu.addClass("menu");
 				$(".sub").eq($(this).index()).css("display","block");
@@ -24,187 +39,448 @@
 				menu.removeClass("menu");
 				$(".sub").hide();
 			});
+
+			//// ------slider(button)--- 
+			$(".slider>ul>li").css("width",wrapWidth);
+			$(".slider>ul").css("width",wrapWidth*liCount);
+
+			$(window).resize(function(){
+				var wrapWidth = $(window).outerWidth();
+				$(".slider>ul>li").css("width",wrapWidth);
+				$(".slider>ul").css("width",wrapWidth*liCount);
+				$(".slider>ul").css({left:current*wrapWidth*-1});
+			});
+
+			$(".bt_next").click(function(){
+				if(current <= liCount-1){
+					current++;
+					if(current == liCount){current=0;}
+				}
+				listMove();
+			});
+			$(".bt_prev").click(function(){
+				if(current > -1){
+					current--;
+					if(current == -1){current = liCount-1;}
+				}
+				listMove();
+			});
+			function listMove(){
+				$(".slider>ul").stop().animate({left:current*wrapWidth*-1});
+				$(".bts").css("color","#fff");
+				$(".bts").eq(current).css("color","#0095e1");
+			};
+
+			$(".bts").click(function(){
+				current = $(this).index();
+				listMove();
+			});
+
+			timer();
+
+			function timer(){
+				clickInterval = setInterval(function(){
+					$(".bt_next").trigger("click");
+				},2000);
+			}
+			$(".slider").on({
+				mouseover:function(){clearInterval(clickInterval);},
+				mouseout:function(){timer();}
+			});
+
+
+			$(window).scroll(function(){
+				var sctop = $(window).scrollTop();
+				if(sctop > 50){
+					$(".btn_top").fadeIn();
+				}else{
+					$(".btn_top").fadeOut();
+				}
+			})
+
+
+
 		});
 	</script>
 </head>
 <body>
-	<div class="wrap">
-		<div id="header">
-			<div class="header_top">
-				<div class="logo_area">
-					<div class="left">
-						<a href="#"><i class="fas fa-bars"></i></a>
-						<ul class="top_menu">
-							<li>
-								<a href="#">English</a>
-							</li>
-						</ul>
-					</div>
-					<h1 class="logo">
-						<a href="#">
-							<img src="./images/logo.png" alt="logo">
-						</a>
-					</h1>
-					<div class="right">
-						<ul class="top_menu">
-							<li><a href="#">로그인</a></li>
-							<li><a href="#">회원가입</a></li>
-						</ul>
-						<a href="#"><i class="fas fa-shopping-cart"></i></a>
-					</div>
+	<!-- header -->
+	<div id="header">
+		<div class="header_top">
+			<div class="logo_area">
+				<div class="left">
+					<a href="#"><i class="fas fa-bars"></i></a>
+					<a href="#"><i class="fas fa-times"></i></a>
+					<ul class="top_menu">
+						<li>
+							<a href="#">English</a>
+						</li>
+					</ul>
+				</div>
+				<div class="h1">
+					<a href="#">
+						<img src="./images/logo.png" alt="logo">
+					</a>
+				</div>
+				<div class="right">
+					<ul class="top_menu">
+						<li><a href="#">로그인</a></li>
+						<li><a href="#">회원가입</a></li>
+					</ul>
+					<a href="#"><i class="fas fa-shopping-cart"></i></a>
 				</div>
 			</div>
-			<div class="tab">
-				<div class="tab_menu">
-					<ul>
-						<li>
-							<a href="#">Pizza</a>
-							<ul class="tab_sub">
+		</div>
+		<!-- 전체 메뉴 -->
+		<div class="tab">
+			<div class="tab_menu">
+				<ul>
+					<li>
+						<a href="#">Pizza</a>
+						<ul class="tab_sub">
+							<li><a href="#">슈퍼시드</a></li>
+							<li><a href="#">프리미엄</a></li>
+							<li><a href="#">클래식</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">Side dish</a>
+						<ul class="tab_sub">
+							<li><a href="#">사이드디시</a></li>
+							<li><a href="#">음료</a></li>
+							<li><a href="#">피클&소스</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">Sale&Event</a>
+						<ul class="tab_sub">
+							<li><a href="#">특가메뉴</a></li>
+							<li><a href="#">이벤트</a></li>
+							<li><a href="#">매니아 혜택</a></li>
+							<li><a href="#">할인&제휴</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">My style</a>
+						<ul class="tab_sub">
+							<li><a href="#">하프&하프</a></li>
+							<li><a href="#">마이키친</a></li>
+							<li><a href="#">추가토핑 안내</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">Cupon&Voucher</a>
+						<ul class="tab_sub">
+							<li><a href="#">E-쿠폰</a></li>
+							<li><a href="#">상품권</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">Present</a>
+						<ul class="tab_sub">
+							<li><a href="#">전체</a></li>
+							<li><a href="#">지류상품권</a></li>
+							<li><a href="#">모바일상품권</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">매장찾기</a>
+						<ul class="tab_sub">
+							<li><a href="#">매장찾기</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- 메뉴 -->
+		<div class="menu_area">
+			<div class="gnb">
+				<ul class="gnb_menu">
+					<li>
+						<a href="#">Pizza</a>
+						<div class="sub">
+							<ul class="sub_menu">
 								<li><a href="#">슈퍼시드</a></li>
 								<li><a href="#">프리미엄</a></li>
 								<li><a href="#">클래식</a></li>
 							</ul>
-						</li>
-						<li>
-							<a href="#">Side dish</a>
-							<ul class="tab_sub">
+						</div>
+					</li>
+					<li>
+						<a href="#">Side dish</a>
+						<div class="sub">
+							<ul class="sub_menu">
 								<li><a href="#">사이드디시</a></li>
 								<li><a href="#">음료</a></li>
 								<li><a href="#">피클&소스</a></li>
 							</ul>
-						</li>
-						<li>
-							<a href="#">Sale&Event</a>
-							<ul class="tab_sub">
+						</div>
+					</li>
+					<li>
+						<a href="#">Sale&Event</a>
+						<div class="sub">
+							<ul class="sub_menu">
 								<li><a href="#">특가메뉴</a></li>
 								<li><a href="#">이벤트</a></li>
 								<li><a href="#">매니아 혜택</a></li>
 								<li><a href="#">할인&제휴</a></li>
 							</ul>
-						</li>
-						<li>
-							<a href="#">My style</a>
-							<ul class="tab_sub">
+						</div>
+					</li>
+					<li>
+						<a href="#">My style</a>
+						<div class="sub">
+							<ul class="sub_menu">
 								<li><a href="#">하프&하프</a></li>
 								<li><a href="#">마이키친</a></li>
 								<li><a href="#">추가토핑 안내</a></li>
 							</ul>
-						</li>
-						<li>
-							<a href="#">E-cupon<br>&Voucher</a>
-							<ul class="tab_sub">
+						</div>
+					</li>
+					<li>
+						<a href="#">Cupon&Voucher</a>
+						<div class="sub">
+							<ul class="sub_menu">
 								<li><a href="#">E-쿠폰</a></li>
 								<li><a href="#">상품권</a></li>
 							</ul>
-						</li>
-						<li>
-							<a href="#">Present</a>
-							<ul class="tab_sub">
+						</div>
+					</li>
+					<li>
+						<a href="#">Present</a>
+						<div class="sub">
+							<ul class="sub_menu">
 								<li><a href="#">전체</a></li>
 								<li><a href="#">지류상품권</a></li>
 								<li><a href="#">모바일상품권</a></li>
 							</ul>
-						</li>
-						<li>
-							<a href="#">매장찾기</a>
-							<ul class="tab_sub">
-								<li><a href="#">매장찾기</a></li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="menu_area">
-				<div class="gnb">
-					<ul class="gnb_menu">
-						<li>
-							<a href="#">Pizza</a>
-							<div class="sub">
-								<ul class="sub_menu">
-									<li><a href="#">슈퍼시드</a></li>
-									<li><a href="#">프리미엄</a></li>
-									<li><a href="#">클래식</a></li>
-								</ul>
-							</div>
-						</li>
-						<li>
-							<a href="#">Side dish</a>
-							<div class="sub">
-								<ul class="sub_menu">
-									<li><a href="#">사이드디시</a></li>
-									<li><a href="#">음료</a></li>
-									<li><a href="#">피클&소스</a></li>
-								</ul>
-							</div>
-						</li>
-						<li>
-							<a href="#">Sale&Event</a>
-							<div class="sub">
-								<ul class="sub_menu">
-									<li><a href="#">특가메뉴</a></li>
-									<li><a href="#">이벤트</a></li>
-									<li><a href="#">매니아 혜택</a></li>
-									<li><a href="#">할인&제휴</a></li>
-								</ul>
-							</div>
-						</li>
-						<li>
-							<a href="#">My style</a>
-							<div class="sub">
-								<ul class="sub_menu">
-									<li><a href="#">하프&하프</a></li>
-									<li><a href="#">마이키친</a></li>
-									<li><a href="#">추가토핑 안내</a></li>
-								</ul>
-							</div>
-						</li>
-						<li>
-							<a href="#">E-cupon&Voucher</a>
-							<div class="sub">
-								<ul class="sub_menu">
-									<li><a href="#">E-쿠폰</a></li>
-									<li><a href="#">상품권</a></li>
-								</ul>
-							</div>
-						</li>
-						<li>
-							<a href="#">Present</a>
-							<div class="sub">
-								<ul class="sub_menu">
-									<li><a href="#">전체</a></li>
-									<li><a href="#">지류상품권</a></li>
-									<li><a href="#">모바일상품권</a></li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</div>
+						</div>
+					</li>
+				</ul>
 			</div>
 		</div>
-		<div id="container">
+	</div>
+	<!-- header -->
+
+	<!-- container -->
+	<div id="container">
+		<div id="wrap">
 			<div class="slider">
-				<div class="slide_img">
-					<img src="./images/img1_sidedish.jpg" alt="img1">
-					<img src="./images/img2_special.jpg" alt="img2">
-					<img src="./images/img3_glamping.jpg" alt="img3">
-					<img src="./images/img4_VIP.jpg" alt="img4">
-					<img src="./images/img5_card.jpg" alt="img5">
-					<img src="./images/img6_sale.jpg" alt="img6">
-				</div>
+				<ul class="slide_img">
+					<li>
+						<a href="#"><img src="./images/img1_sidedish.jpg" alt="img1"></a>
+					</li>
+					<li>
+						<a href="#"><img src="./images/img2_special.jpg" alt="img2"></a>
+					</li>
+					<li>
+						<a href="#"><img src="./images/img3_glamping.jpg" alt="img3"></a>
+					</li>
+					<li>
+						<a href="#"><img src="./images/img4_VIP.jpg" alt="img4"></a>
+					</li>
+					<li>
+						<a href="#"><img src="./images/img5_card.jpg" alt="img5"></a>
+					</li>
+					<li>
+						<a href="#"><img src="./images/img6_sale.jpg" alt="img6"></a>
+					</li>
+				</ul>
 				<div class="btn">
 					<img src="./images/prev.png" alt="이전" class="bt_prev">
 					<img src="./images/next.png" alt="이후" class="bt_next">
 				</div>
 				<div class="pager">
-					<span class="bts">●</span>
+					<span class="bts" style="color:#0095e1;">●</span>
 					<span class="bts">●</span>
 					<span class="bts">●</span>
 					<span class="bts">●</span>
 					<span class="bts">●</span>
 					<span class="bts">●</span>
 				</div>
+			</div>
+			<div class="s_text">
+				<p>2018 프리미엄브랜드지수 피자전문점 부분 3년 연속 1위 수상</p>
+			</div>
+		</div>
+		<div class="content">
+			<ul class="icons">
+				<li style="background:#f00">
+					<a href="#" class="icon">
+						<img src="./images/main_icon01.png" alt="img01">
+						<p style="color:#fff">주문하기</p>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="icon">
+						<img src="./images/main_icon02.png" alt="img02">
+						<p>도미챗</p>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="icon">
+						<img src="./images/main_icon03.png" alt="img03">
+						<p>퀵오더</p>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="icon">
+						<img src="./images/main_icon04.png" alt="img04">
+						<p>특가&이벤트</p>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="icon">
+						<img src="./images/main_icon05.png" alt="img05">
+						<p>선물하기</p>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="icon">
+						<img src="./images/main_icon06.png" alt="img06">
+						<p>내맘대로피자</p>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="icon">
+						<img src="./images/main_icon07.png" alt="img07">
+						<p>단체주문</p>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="icon">
+						<img src="./images/main_icon08.png" alt="img08">
+						<p>매장직원채용</p>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="icon">
+						<img src="./images/main_icon09.png" alt="img09">
+						<p>오픈서베이</p>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="icon">
+						<img src="./images/main_icon10.png" alt="img10">
+						<p>한국도미노피자</p>
+					</a>
+				</li>
+			</ul>
+			<div class="event">
+				<a href="#">
+					<img src="./images/event.jpg" alt="event"/>
+				</a>
+			</div>
+			<div class="banner">
+				<div class="bnr_area">
+					<div class="bnr1 bnr_info">
+						<div class="info_text">
+							<p>로그인하시면<br>풍성한 혜택이 가득!</p>
+							<a href="#">로그인</a>
+						</div>
+					</div>
+					<div class="bnr1 bnr_section">
+						<div class="notice">
+							<div class="n_head">
+								<h3>공지사항</h3>
+								<span><i class="fas fa-plus add"></i></span>
+							</div>
+							<div class="n_text">
+								<ul>
+									<li>
+										<a href="#">
+											<span><i class="fas fa-bullhorn no"></i></span>
+											도미노피자 홈페이지 이뉴얼 기념이벤트 당첨자 안내
+										</a>
+									</li>
+									<li>
+										<a href="#"><span><i class="fas fa-bullhorn no"></i></span>
+										2018 도미노 온라인 매니아 혜택 및 주문 정책 변경 안내</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="bnr1 bnr_left">
+						<img src="./images/banner_p.jpg" alt="p">
+					</div>
+					<div class="bnr1 bnr_right">
+						<img src="./images/banner_g.jpg" alt="g">
+					</div>
 				</div>
+				
+			</div>
 		</div>
 	</div>
+	<!-- container -->
+
+	<!-- footer -->
+	<footer>
+		<div class="footer">
+			<div class="footer_wrap">
+				<div class="company_info">
+					<div class="phone">
+						<p>전화주문</p>
+						<i class="fas fa-phone"></i>
+						1577-3082
+					</div>
+					<ul class="sns">
+						<li><a href="https://www.facebook.com/dominostory/" target="bolck"><img src="./images/sns1.png" alt="sns1"></a></li>
+						<li><a href="https://twitter.com/dominostory"><img src="./images/sns2.png" alt="sns2"></a></li>
+						<li><a href="http://blog.naver.com/dominostory"><img src="./images/sns3.png" alt="sns3"></a></li>
+						<li><a href="https://www.instagram.com/dominostory/"><img src="./images/sns4.png" alt="sns4"></a></li>
+					</ul>
+
+					<div class="footer_menu">
+						<ul class="introduce">
+							<li><a href="#">회사소개</a></li>
+							<li><a href="#" style="color:#0078ae;">개인정보 처리방침</a></li>
+							<li><a href="#">이용약관</a></li>
+							<li><a href="#">고객센터</a></li>
+						</ul>
+						<ul class="address">
+							<li>135-928 서울특별시 강남구 언주로 315 청오디피케이㈜</li>
+							<li>문의:<a href="#">webmaster@dominos.co.kr</a></li>
+							<li>사업자 등록번호:220-81-03371</li>
+							<li>통신판매업신고:강남 5064호</li>
+							<li>개인정보 보호책임자:이명윤</li>
+							<li>대표이사:오광현</li>
+						</ul>
+						<address>Copyright&capt;2017 Domino's Pizza All right reserved.</address>
+					</div>
+				</div>
+				<div class="awards_area">
+					<ul class="list_awards">
+						<li>
+							<img src="./images/list_awards1.png" alt="lis1">
+							<p>식품안전<br>경영시스템 인증</p>
+						</li>
+						<li>
+							<img src="./images/list_awards2.png" alt="lis2">
+							<p>지식경제부<br>우수디자인 선정</p>
+						</li>
+						<li>
+							<img src="./images/list_awards3.png" alt="lis3">
+							<p>고객이 가장 추천하는 기업<br>피자전문점 부문 5년 연속 1위</p>
+						</li>
+						<li>
+							<img src="./images/list_awards4.png" alt="lis4">
+							<p>2017년 「대한민국인터넷소통대상」<br>「대한민국소셜미디어대상」<br>Leading Star (5년 연속 종합 1위)</p>
+						</li>
+						<li>
+							<img src="./images/list_awards5.png" alt="lis5">
+							<p>2017년 한국산업 고객만족도<br>피자전문점 부문 3년 연속 1위</p>
+						</li>
+						<li>
+							<img src="./images/list_awards6.png" alt="lis6">
+							<p>2018 프리미엄브랜드지수 피자전문점 부분<br>3년 연속 1위 수상</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<a href="#" class="btn_top">↑</a>
+		</div>
+	</footer>
+	<!-- footer -->
 </body>
 </html>
