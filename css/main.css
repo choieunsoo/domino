@@ -101,7 +101,8 @@
 		.bnr_info{float:left;}
 		.info_text{width:462px;height:110px;padding:15px;position: relative;}
 		.info_text>p{font-size:17px;font-weight:bold;color:#48525F;}
-		.info_text>a{font-size:14px;border:2px solid #0078AE;padding:5px 10px;position: absolute;right:15px;top:54px;}
+		.info_text>a{color:#0078AE;font-size:14px;border:2px solid #0078AE;padding:5px 10px;position: absolute;right:15px;top:54px;}
+		.info_text>a:hover{border:2px solid #004482;color:#004482;}
 
 		.bnr_section{float:right;}
 		.notice{width: 452px;height:110px;padding:15px 20px;}
@@ -115,6 +116,7 @@
 		.n_text>ul>li{font-size:14px;margin-top:12px;padding-left:10px;}
 		.n_text>ul>li:nth-child(2){border-top:2px dotted #aaa;padding-top:11px;}
 		.n_text>ul>li>a{color:#808486;}
+		.n_text>ul>li>a:hover{font-weight:bold;}
 		.no{color:#808486;font-size:14px;margin-right:5px;}
 
 		.bnr_left{float:left;cursor:pointer;}
@@ -167,7 +169,8 @@
 		.list_awards>li:first-child{margin-left:0;}
 		.list_awards>li:nth-child(6){margin-left:0;}
 		.list_awards>li:after{content:"";display:block;clear:both;}
-		.list_awards>li>img{float:left;}
+		.list_awards>li>img{float:left;width:30px;}
+		.list_awards>li>img:nth-child(1){float:left;width:51px;}
 		.list_awards>li>p{display:block;float:right;font-size:10px;height:51px;text-align:left;color:#707067;margin-top:10px;margin-left:5px;}
 		.list_awards>li>p:nth-child(4){margin-top:0;}
 
