@@ -40,7 +40,7 @@
 		.gnb{width: 1000px;height: 53px;margin:0 auto;_background: #2df;}
 		ul.gnb_menu{width:100%;}
 		ul.gnb_menu:after{content:"";display:block;clear:both;}
-		.gnb_menu>li{float:left;width:166.6px;height:53px;}
+		.gnb_menu>li{float:left;width:166px;height:53px;}
 		.gnb_menu>li>a{display:block;height:53px;line-height:53px;font-size:18px;font-weight:bold;color:#48525f;position: relative;}
 		.gnb_menu>li:nth-child(1)>a{margin:0 60px;}
 		.gnb_menu>li:nth-child(2)>a{margin:0 40px;}
